@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Geolocation</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(
+				function (pos) {
+					var location = "<li>" + pos.coords.latitude + "</li>";
+					location += "<li>" + pos.coords.longitude + "</li>";
+					document.getElementById("location").innerHTML = location;
+
+					var lati = pos.coords.latitude;
+					var longi = pos.coords.longitude;
+					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&range=1&is_open_time=now&ktai_coupon=1&format=jsonp&lat=" + lati + "&lng=" + longi + "&callback=?");
+
+					$.getJSON(hotpepper, function(json){
+						$.each(json.results.shop, function(i, shop){
+							$("#result").append('<a href="' + shop.urls.pc + '">クーポン<br>');
+						});
+					});
+				},
+				function (pos) {
+					var location = "<li>位置情報が取得できませんでした。</li>";
+					document.getElementById("location").innerHTML = location;
+				}
+			);
+		} else {
+			window.alert("本ブラウザではGeolocationが使えません。");
+		}
+		</script>
+		<ul id="location"></ul>
+		<div id="result"></div>
+	</body>
+</html>
