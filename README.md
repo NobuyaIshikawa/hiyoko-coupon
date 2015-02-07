@@ -23,6 +23,11 @@ httpd.conf の以下のIfModule 要素内すべてをコメントアウト
 #</IfModule>
 ```
 
+httpd.conf の以下のモジュールをコメントアウトしてください。
+```
+#LoadModule rewrite_module modules/mod_rewrite.so
+```
+
 XAMPP のApache を起動して、Web ブラウザでアクセスしてください。
 ```
 http://localhost/
