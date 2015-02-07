@@ -30,7 +30,7 @@
 
 						var address = "http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=" + longi + "&y=" + lati + "&jsonp=?"
 						$.getJSON(address, function(json){
-							$("#location").append("現在地：" + json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "周辺"  );
+							$("#location").append("いまどこ？：" + json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "の近く。"  );
 						});
 
 						var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&lat=" + lati + "&lng=" + longi + "&range=1&ktai_coupon=0&free_drink=" + drink + "&midnight=" + night + "&course=" + course + "&format=jsonp&count=100&callback=?");
@@ -107,7 +107,7 @@
 			var course = $("#course").val();
 			var night = $("#midnight").val();
 			$(".progress").empty();
-			$(".progress").html('<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" data-transitiongoal="100"></div>');
+			$(".progress").html('<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" data-transitiongoal="100"></div>');
 			$('.progress .progress-bar').progressbar();
 			$("#location").empty();
 			$("#result").empty();
