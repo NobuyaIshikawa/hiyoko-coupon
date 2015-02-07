@@ -49,9 +49,13 @@
 							$("#result div:last table:last").append('<tr></tr>');
 							$("#result div:last table:last tr:last").append('<td colspan="2">' + shop.open + '</td>');
 							if((i+1) % 2 == 1){
-								$("#"+span).addClass('fadeInLeftBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass());
+								$("#"+span).addClass('fadeInLeftBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+									$(this).removeClass();
+								}).css("animation-delay", i/5 + "s");
 							}else{
-								$("#"+span).addClass('fadeInRightBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass());
+								$("#"+span).addClass('fadeInRightBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+									$(this).removeClass();
+								}).css("animation-delay", i/5 + "s");
 							}
 						});
 					});
