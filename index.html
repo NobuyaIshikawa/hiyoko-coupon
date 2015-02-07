@@ -3,7 +3,14 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Geolocation</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<style type="text/css">
+			body {
+				font-size: 18px;
+			}
+		</style>
 	</head>
 	<body>
 		<script type="text/javascript">
@@ -15,20 +22,25 @@
 
 					var address = "http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=" + longi + "&y=" + lati + "&jsonp=?"
 					$.getJSON(address, function(json){
-						$("#location").append(json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "周辺"  );
+						$("#location").append("現在地：" + json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "周辺"  );
 					});
 
-					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&lat=" + lati + "&lng=" + longi + "&range=1&is_open_time=now&ktai_coupon=0&format=jsonp&count=100&callback=?");
+					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&lat=" + lati + "&lng=" + longi + "&range=1&ktai_coupon=0&format=jsonp&count=100&callback=?");
 
 					$.getJSON(hotpepper, function(json){
 						$.each(json.results.shop, function(i, shop){
 							$("#result").append('<tr></tr>');
-							$("#result tr:last").append('<td><img src="' + shop.photo.pc.s + '" alt="' + shop.name + '"></td>');
-							$("#result tr:last").append('<td>' + shop.name + '</td>');
-							$("#result tr:last").append('<td>' + shop.open + '</td>');
+							$("#result tr:last").append('<th rowspan="4" style="width:20%; vertical-align: middle; text-align: center;" border="1"><a href="' + shop.urls.pc + '"><img src="' + shop.photo.mobile.l + '" alt="' + shop.name + '" style="width:100%"></a></td>');
+							$("#result tr:last").append('<th style="width:40%;">店名</th><th style="width:30%;">平均予算</th>');
+							$("#result tr:last").append('<th rowspan="4" style="width:10%;" border="1"><a class="btn btn-default" href="' + shop.coupon_urls.sp + '" role="button">クーポン</a></td>');
+							$("#result").append('<tr></tr>');
+							$("#result tr:last").append('<td><a href="' + shop.urls.pc + '">' + shop.name + '</a></td>');
 							$("#result tr:last").append('<td>' + shop.budget.average + '</td>');
-							$("#result tr:last").append('<td>' + shop.budget_memo + '</td>');
-							$("#result tr:last").append('<td><a href="' + shop.coupon_urls.sp + '" target="_blank">クーポン</a></td>');
+							$("#result").append('<tr></tr>');
+							$("#result tr:last").append('<th colspan="2">営業時間</th>');
+							$("#result").append('<tr></tr>');
+							$("#result tr:last").append('<td colspan="2">' + shop.open + '</td>');
+							// $("#result tr:last").append('<td>' + shop.budget_memo + '</td>');
 						});
 					});
 				},
@@ -42,10 +54,6 @@
 		}
 		</script>
 		<ul id="location"></ul>
-		<table id="result">
-			<tr>
-				<th></th><th>店名</th><th>営業時間</th><th>平均予算</th><th>料金備考</th><th>クーポンURL</th>
-			</tr>
-		</table>
+		<table id="result" class="table table-striped"></table>
 	</body>
 </html>
