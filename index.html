@@ -7,7 +7,6 @@
 		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
 		<link rel="dns-prefetch" href="//code.jquery.com" />
 		<link rel="stylesheet" href="./css/animate.css" />
-		<link rel="stylesheet" href="style.css" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<style type="text/css">
@@ -18,65 +17,94 @@
 	</head>
 	<body>
 		<script type="text/javascript">
-		$(document).ready(function() {
-			//　プログレスバー
-			$("#progress_bar").append('<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100" style="width: 99%"><span class="sr-only"></span></div>');
+		$.ajaxSetup({
+			async: false
 		});
+		function searchShop(drink, night, course){
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(
+					function (pos) {
+						var lati = pos.coords.latitude;
+						var longi = pos.coords.longitude;
 
-
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(
-				function (pos) {
-					var lati = pos.coords.latitude;
-					var longi = pos.coords.longitude;
-
-					var address = "http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=" + longi + "&y=" + lati + "&jsonp=?"
-					$.getJSON(address, function(json){
-						$("#location").append("現在地：" + json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "周辺"  );
-					});
-
-					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&lat=" + lati + "&lng=" + longi + "&range=1&ktai_coupon=0&format=jsonp&count=100&callback=?");
-
-					$.getJSON(hotpepper, function(json){
-						$.each(json.results.shop, function(i, shop){
-							var span = 'span' + i;
-							$("#result").append('<div id="' + span + '">');
-							$("#result div:last").append('<table class="table table-striped table-bordered"></table>');
-							$("#result div:last table:last").append('<tr></tr>');
-							$("#result div:last table:last").append('<tr></tr>');
-							$("#result div:last table:last tr:last").append('<th rowspan="4" style="width:20%; vertical-align: middle; text-align: center;" border="1"><a href="' + shop.urls.pc + '"><img src="' + shop.photo.mobile.l + '" alt="' + shop.name + '" style="width:100%"></a></td>');
-							$("#result div:last table:last tr:last").append('<th style="width:35%;">店名</th><th style="width:35%;">平均予算</th>');
-							$("#result div:last table:last tr:last").append('<th rowspan="4" style="width:10%;" border="1"><a class="btn btn-default" href="' + shop.coupon_urls.sp + '" role="button">クーポン</a></td>');
-							$("#result div:last table:last").append('<tr></tr>');
-							$("#result div:last table:last tr:last").append('<td><a href="' + shop.urls.pc + '">' + shop.name + '</a></td>');
-							$("#result div:last table:last tr:last").append('<td>' + shop.budget.average + '</td>');
-							$("#result div:last table:last").append('<tr></tr>');
-							$("#result div:last table:last tr:last").append('<th colspan="2">営業時間</th>');
-							$("#result div:last table:last").append('<tr></tr>');
-							$("#result div:last table:last tr:last").append('<td colspan="2">' + shop.open + '</td>');
-							if((i+1) % 2 == 1){
-								$("#"+span).addClass('fadeInLeftBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-									$(this).removeClass();
-								}).css("animation-delay", i/5 + "s");
-							}else{
-								$("#"+span).addClass('fadeInRightBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-									$(this).removeClass();
-								}).css("animation-delay", i/5 + "s");
-							}
+						var address = "http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=" + longi + "&y=" + lati + "&jsonp=?"
+						$.getJSON(address, function(json){
+							$("#location").append("現在地：" + json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "周辺"  );
 						});
-					});
-				},
-				function (pos) {
-					var location = "<li>位置情報が取得できませんでした。</li>";
-					document.getElementById("location").innerHTML = location;
-				}
-			);
-		} else {
-			window.alert("本ブラウザではGeolocationが使えません。");
+
+						var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&lat=" + lati + "&lng=" + longi + "&range=1&ktai_coupon=0&free_drink=" + drink + "&midnight=" + night + "&course=" + course + "&format=jsonp&count=100&callback=?");
+						console.log(hotpepper);
+						$.getJSON(hotpepper, function(json){
+							$.each(json.results.shop, function(i, shop){
+								var span = 'span' + i;
+								$("#result").append('<div id="' + span + '">');
+								$("#result div:last").append('<table class="table table-striped table-bordered"></table>');
+								$("#result div:last table:last").append('<tr></tr>');
+								$("#result div:last table:last").append('<tr></tr>');
+								$("#result div:last table:last tr:last").append('<th rowspan="4" style="width:20%; vertical-align: middle; text-align: center;" border="1"><a href="' + shop.urls.pc + '"><img src="' + shop.photo.mobile.l + '" alt="' + shop.name + '" style="width:100%"></a></td>');
+								$("#result div:last table:last tr:last").append('<th style="width:35%;">店名</th><th style="width:35%;">平均予算</th>');
+								$("#result div:last table:last tr:last").append('<th rowspan="4" style="width:10%;" border="1"><a class="btn btn-default" href="' + shop.coupon_urls.sp + '" role="button">クーポン</a></td>');
+								$("#result div:last table:last").append('<tr></tr>');
+								$("#result div:last table:last tr:last").append('<td><a href="' + shop.urls.pc + '">' + shop.name + '</a></td>');
+								$("#result div:last table:last tr:last").append('<td>' + shop.budget.average + '</td>');
+								$("#result div:last table:last").append('<tr></tr>');
+								$("#result div:last table:last tr:last").append('<th colspan="2">営業時間</th>');
+								$("#result div:last table:last").append('<tr></tr>');
+								$("#result div:last table:last tr:last").append('<td colspan="2">' + shop.open + '</td>');
+								if((i+1) % 2 == 1){
+									$("#"+span).addClass('fadeInLeftBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										$(this).removeClass();
+									}).css("animation-delay", i/5 + "s");
+								}else{
+									$("#"+span).addClass('fadeInRightBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+										$(this).removeClass();
+									}).css("animation-delay", i/5 + "s");
+								}
+							});
+						});
+					},
+					function (pos) {
+						var location = "<li>位置情報が取得できませんでした。</li>";
+						document.getElementById("location").innerHTML = location;
+					}
+				);
+			} else {
+				window.alert("本ブラウザではGeolocationが使えません。");
+			}
 		}
 		</script>
-		<ul id="location"></ul>
-		<div id="result"></div>
-		<div id="progress_bar" class="progress"></div>
+		<div style="width: 100%">
+			<h1>ひよこクーポン</h1>
+			<label class="label label-info">コース料理</label>
+			<select id="course">
+				<option value="0">指定なし</option>
+				<option value="1">コース有り</option>
+			</select>
+			<label class="label label-info">飲み放題</label>
+			<select id="drinkfree">
+				<option value="0">指定なし</option>
+				<option value="1">飲み放題有り</option>
+			</select>
+			<label class="label label-info">深夜営業</label>
+			<select id="midnight">
+				<option value="0">指定なし</option>
+				<option value="1">23時以降も営業</option>
+			</select>
+			<br><br>
+			<button id="search" class="btn btn-default">検索開始</button>
+			<ul id="location"></ul>
+			<div id="result"></div>
+		</div>
+		<script>
+
+		$("#search").click(function(){
+			var drink = $("#drinkfree").val();
+			var course = $("#course").val();
+			var night = $("#midnight").val();
+			$("#location").empty();
+			$("#result").empty();
+			searchShop(drink, night, course);
+		});
+		</script>
 	</body>
 </html>
