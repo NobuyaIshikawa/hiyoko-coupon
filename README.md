@@ -1,26 +1,29 @@
-# CakePHP Application Skeleton
+# ひよこクーポンプロジェクト
 
-[![Build Status](https://api.travis-ci.org/cakephp/app.png)](https://travis-ci.org/cakephp/app)
-[![License](https://poser.pugx.org/cakephp/app/license.svg)](https://packagist.org/packages/cakephp/app)
-
-A skeleton for creating applications with [CakePHP](http://cakephp.org) 3.0.
-
-This is an unstable repository and should be treated as an alpha.
-
-## Installation
-
-1. Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist -s dev cakephp/app [app_name]`.
-
-If Composer is installed globally, run
+## 開発環境の構築
+C:/xampp/htdocs/ ディレクトリ配下で
 ```bash
-composer create-project --prefer-dist -s dev cakephp/app [app_name]
+git clone https://github.com/NobuyaIshikawa/hiyoko-coupon
 ```
 
-You should now be able to visit the path to where you installed the app and see
-the setup traffic lights.
+C:\xampp\apache\conf\httpd.conf のDocument Root を変更してください。
+```
+DocumentRoot "C:/xampp/htdocs/hiyoko-coupon"
+```
 
-## Configuration
+httpd.conf のDirectory も変更してください
+```
+<Directory "C:/xampp/htdocs/hiyoko-coupon">
+```
 
-Read and edit `config/app.php` and setup the 'Datasources' and any other
-configuration relevant for your application.
+httpd.conf の以下のIfModule 要素内すべてをコメントアウト
+```
+#<IfModule alias_module>
+#～
+#</IfModule>
+```
+
+XAMPP のApache を起動して、Web ブラウザでアクセスしてください。
+```
+http://localhost/
+```
