@@ -18,6 +18,12 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+		$(document).ready(function() {
+			//　プログレスバー
+			$("#progress_bar").append('<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="99" aria-valuemin="0" aria-valuemax="100" style="width: 99%"><span class="sr-only"></span></div>');
+		});
+
+
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				function (pos) {
@@ -71,5 +77,6 @@
 		</script>
 		<ul id="location"></ul>
 		<div id="result"></div>
+		<div id="progress_bar" class="progress"></div>
 	</body>
 </html>
