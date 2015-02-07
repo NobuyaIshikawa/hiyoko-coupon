@@ -32,3 +32,7 @@ XAMPP のApache を起動して、Web ブラウザでアクセスしてくださ
 ```
 http://localhost/
 ```
+
+メモ：
+プログレスバーのサンプル
+http://www.minddust.com/project/bootstrap-progressbar/demo/bootstrap-3-3-0/
