@@ -4,6 +4,10 @@
 		<meta charset="utf-8" />
 		<title>Geolocation</title>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+		<link rel="dns-prefetch" href="//code.jquery.com" />
+		<link rel="stylesheet" href="./css/animate.css" />
+		<link rel="stylesheet" href="style.css" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<style type="text/css">
@@ -29,6 +33,8 @@
 
 					$.getJSON(hotpepper, function(json){
 						$.each(json.results.shop, function(i, shop){
+							var span = '#span' + i;
+							$("#result").append('<span id=' + span + ' ');
 							$("#result").append('<tr></tr>');
 							$("#result tr:last").append('<th rowspan="4" style="width:20%; vertical-align: middle; text-align: center;" border="1"><a href="' + shop.urls.pc + '"><img src="' + shop.photo.mobile.l + '" alt="' + shop.name + '" style="width:100%"></a></td>');
 							$("#result tr:last").append('<th style="width:40%;">店名</th><th style="width:30%;">平均予算</th>');
@@ -41,6 +47,11 @@
 							$("#result").append('<tr></tr>');
 							$("#result tr:last").append('<td colspan="2">' + shop.open + '</td>');
 							// $("#result tr:last").append('<td>' + shop.budget_memo + '</td>');
+							if((i+1) % 2 == 1){
+								$(span).addClass('fadeInLeftBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass());
+							}else{
+								$(span).addClass('fadeInRightBig animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', $(this).removeClass());
+							}
 						});
 					});
 				},
