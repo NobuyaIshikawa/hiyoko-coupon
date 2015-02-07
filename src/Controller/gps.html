@@ -18,16 +18,9 @@
 					var longi = pos.coords.longitude;
 					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&range=1&is_open_time=now&ktai_coupon=1&format=jsonp&lat=" + lati + "&lng=" + longi + "&callback=?");
 
-					console.log(hotpepper);
 					$.getJSON(hotpepper, function(json){
 						$.each(json.results.shop, function(i, shop){
-							$("#result").append('<tr></tr>');
-							$("#result tr:last").append('<td><img src="' + shop.photo.pc.m + '"></td>');
-							$("#result tr:last").append('<td>' + shop.name + '</td>');
-							$("#result tr:last").append('<td>' + shop.open + '</td>');
-							$("#result tr:last").append('<td>' + shop.budget.average + '</td>');
-							$("#result tr:last").append('<td>' + shop.budget_memo + '</td>');
-							$("#result tr:last").append('<td><a href="' + shop.coupon_urls.sp + '" target="_blank">クーポン</a></td>');
+							$("#result").append('<a href="' + shop.urls.pc + '">クーポン<br>');
 						});
 					});
 				},
@@ -41,10 +34,6 @@
 		}
 		</script>
 		<ul id="location"></ul>
-		<table id="result">
-			<tr>
-				<th></th><th>店名</th><th>営業時間</th><th>平均予算</th><th>料金備考</th><th>クーポンURL</th>
-			</tr>
-		</table>
+		<div id="result"></div>
 	</body>
 </html>
