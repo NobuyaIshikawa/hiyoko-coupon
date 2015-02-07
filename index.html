@@ -10,19 +10,20 @@
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				function (pos) {
-					var location = "<li>" + pos.coords.latitude + "</li>";
-					location += "<li>" + pos.coords.longitude + "</li>";
-					document.getElementById("location").innerHTML = location;
-
 					var lati = pos.coords.latitude;
 					var longi = pos.coords.longitude;
-					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&range=1&is_open_time=now&ktai_coupon=1&format=jsonp&lat=" + lati + "&lng=" + longi + "&callback=?");
 
-					console.log(hotpepper);
+					var address = "http://geoapi.heartrails.com/api/json?method=searchByGeoLocation&x=" + longi + "&y=" + lati + "&jsonp=?"
+					$.getJSON(address, function(json){
+						$("#location").append(json.response.location[0].prefecture + json.response.location[0].city + json.response.location[0].town + "周辺"  );
+					});
+
+					var hotpepper = encodeURI("http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=1f8a076c65aade23&lat=" + lati + "&lng=" + longi + "&range=1&is_open_time=now&ktai_coupon=0&format=jsonp&count=100&callback=?");
+
 					$.getJSON(hotpepper, function(json){
 						$.each(json.results.shop, function(i, shop){
 							$("#result").append('<tr></tr>');
-							$("#result tr:last").append('<td><img src="' + shop.photo.pc.m + '"></td>');
+							$("#result tr:last").append('<td><img src="' + shop.photo.pc.s + '" alt="' + shop.name + '"></td>');
 							$("#result tr:last").append('<td>' + shop.name + '</td>');
 							$("#result tr:last").append('<td>' + shop.open + '</td>');
 							$("#result tr:last").append('<td>' + shop.budget.average + '</td>');
